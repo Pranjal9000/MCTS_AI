@@ -1,4 +1,4 @@
-from connect4.mcts_ia import train_mcts_once, train_mcts_during
+from connect4.mcts_ai import train_mcts_once, train_mcts_during
 from connect4.connect4 import *
 from collections import defaultdict
 import numpy as np
@@ -17,41 +17,47 @@ def utils_print(grid):
 
 if __name__ == '__main__':
 
-    mcts = None
+    mcts_AI1 = None
+    mcts_AI2 = None
 
-    for i in range(100):
-        mcts = train_mcts_once(mcts)
+    for i in range(40):
+        mcts_AI1 = train_mcts_once(mcts_AI1)
+    for i in range(200):
+        mcts_AI2 = train_mcts_once(mcts_AI2)
 
-    print('training finished')
+    print('training finished for both AI\'s')
     while True:
         # test AI with real play
         grid = create_grid()
         round = 0
-        training_time = 2000
-        node = mcts
+        training_time_AI1 = 2000
+        training_time_AI2 = 2000
+        node_AI1 = mcts_AI1
+        node_AI2 = mcts_AI2
         utils_print(grid)
         while True:
             if (round % 2) == 0:
-                move = int(input())
-                new_node = node.get_children_with_move(move)
-                node = train_mcts_during(node, training_time).get_children_with_move(move)
+                new_node, move = node_AI1.next()
+                node_AI1 = train_mcts_during(node_AI1, training_time_AI1)
+                node_AI1, move = node_AI1.next()
             else:
-                new_node, move = node.select_move()
-                node = train_mcts_during(node, training_time)
+                new_node, move = node_AI2.next()
+                node_AI2 = train_mcts_during(node_AI2, training_time_AI2)
                 # print([(n.win, n.games) for n in node.children])
-                node, move = node.select_move()
+                node_AI2, move = node_AI2.next()
 
             grid, winner = play(grid, move)
 
             utils_print(grid)
 
 
-            assert np.sum(node.state - grid) == 0, node.state
+            # assert np.sum(node_AI1.state - grid) == 0, node_AI1.state
+            # assert np.sum(node_AI2.state - grid) == 0, node_AI2.state
             if winner != 0:
                 print('Winner : ', 'X' if winner == -1 else 'O')
                 break
             round += 1
 
 
-    from pdb import set_trace; set_trace()
+    # from pdb import set_trace; set_trace()
 

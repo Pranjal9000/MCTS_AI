@@ -15,16 +15,14 @@ class Node:
         self.children = children
 
     def get_uct(self):
+        # GET THE VALUE OF THE UCT FORMULA
         if self.games == 0:
             return None
         return (self.win/self.games) + np.sqrt(2*np.log(self.parent.games)/self.games)
 
 
-    def select_move(self):
-        """
-        Select best move and advance
-        :return:
-        """
+    def next(self):
+        #get the next move before next move
         if self.children is None:
             return None, None
 
@@ -32,12 +30,12 @@ class Node:
         if len(winners) > 0:
             return winners[0], winners[0].move
 
-        games = [child.win/child.games if child.games > 0 else 0 for child in self.children]
-        best_child = self.children[np.argmax(games)]
-        return best_child, best_child.move
+        t_games = [child.win/child.games if child.games > 0 else 0 for child in self.children]
+        best_move = self.children[np.argmax(t_games)]
+        return best_move, best_move.move
 
 
-    def get_children_with_move(self, move):
+    def next_children(self, move):
         if self.children is None:
             return None
         for child in self.children:

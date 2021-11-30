@@ -1,6 +1,6 @@
 import numpy as np
 
-def create_grid(sizeX=6, sizeY=7):
+def create_grid(sizeX=5, sizeY=6):
     return np.zeros((sizeX, sizeY), dtype=int)
 
 def reset(grid):
