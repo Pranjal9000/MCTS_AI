@@ -17,7 +17,7 @@ def random_play(grid):
             return 0
         selected_move = random.choice(moves)
         player_to_play = get_player_to_play(grid)
-        grid, winner = play(grid, selected_move)
+        grid, winner, draw = play(grid, selected_move)
         if np.abs(winner) > 0:
             return player_to_play
 
@@ -42,7 +42,7 @@ def random_play_improved(grid):
             selected_move = loosing_moves[0]
         else:
             selected_move = random.choice(moves)
-        grid, winner = play(grid, selected_move)
+        grid, winner, draw = play(grid, selected_move)
         if np.abs(winner) > 0:
             return player_to_play
 

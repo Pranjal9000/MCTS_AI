@@ -18,9 +18,18 @@ def play(grid_, column, player=None):
     if can_play(grid, column):
         row = grid.shape[0] - 1 - np.sum(np.abs(grid[:, column]), dtype=int)
         grid[row, column] = player
-    else:
-        raise Exception('Error : Column {} is full'.format(column))
-    return grid, player if has_won(grid, player, row, column) else 0
+    else: 
+        return grid , 0 , True
+    return grid, player if has_won(grid, player, row, column) else 0, False
+
+def if_draw(grid):
+    check = 0
+    for i in grid:
+        for j in i:
+            if j == 0:
+                check += 1
+    return check < 1
+    
 
 def can_play(grid, column):
     """
